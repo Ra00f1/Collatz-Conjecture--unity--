@@ -104,6 +104,7 @@ public class Code2D : MonoBehaviour
 
     public IEnumerator calculate(float waittime)
     {
+        Number = StartNumber;
         yield return new WaitForSeconds(waittime);
         if (FinishedCalculating == false)
         {

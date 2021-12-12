@@ -52,11 +52,12 @@ public class Code2D : MonoBehaviour
 
     public void calacB()
     {
-        if (AlreadyCalculated == false)
-        {
+        Number = StartNumber;
+        //if (AlreadyCalculated == false)
+        //{
             StartCoroutine(calculate(WaitTime));
-            AlreadyCalculated = true;
-        }
+            //AlreadyCalculated = true;
+        //}
     }
     public void CreateTree()
     {
@@ -104,7 +105,6 @@ public class Code2D : MonoBehaviour
 
     public IEnumerator calculate(float waittime)
     {
-        Number = StartNumber;
         yield return new WaitForSeconds(waittime);
         if (FinishedCalculating == false)
         {

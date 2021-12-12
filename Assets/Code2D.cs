@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Linq;
 using TMPro;
 
@@ -9,16 +10,19 @@ public class Code2D : MonoBehaviour
     public GameObject Cylinder;
     public GameObject LastGO;
 
-    public int StartNumber;
-    public int Number;
+    public long StartNumber;
+    public long Number;
+    private long TempNumber;
 
-    public List<int> existingnumbers;
-    public List<int> numberstoadd;
+    public List<long> existingnumbers;
+    public List<long> numberstoadd;
 
     public Transform Location;
     public Transform NextLocation;
 
     public TextMeshProUGUI Numbertext;
+    public TextMeshProUGUI CalculationProcess;
+    public TMP_InputField InputField;
 
     public Vector3 rotation;
 
@@ -37,10 +41,13 @@ public class Code2D : MonoBehaviour
     void Start()
     {
         Number = StartNumber;
+        TempNumber = Number;
     }
 
     void Update()
     {
+        long.TryParse(InputField.text, out StartNumber);
+        //Number = InputField.text.ToString()(long);
     }
 
     public void calacB()
@@ -65,12 +72,12 @@ public class Code2D : MonoBehaviour
         {
             for (int i = 0; i < existingnumbers.Count; i++)
             {
-                int number = existingnumbers[i];
+                long number = existingnumbers[i];
                 //Even
                 if (number % 2 == 0 && FinishedCreating == false)
                 {
                     NextLocation = LastGO.transform.Find("CylinderTop").GetComponent<Transform>();
-                    LastGO = Instantiate(Cylinder, new Vector2 (NextLocation.transform.position.x - 1, NextLocation.transform.position.y + 0.5f), Quaternion.identity);
+                    LastGO = Instantiate(Cylinder, new Vector2 (NextLocation.transform.position.x + 2, NextLocation.transform.position.y + 0.5f), Quaternion.identity);
                     Numbertext = LastGO.transform.GetChild(1).transform.Find("Number").GetComponent<TextMeshProUGUI>();
                     Numbertext.SetText(number.ToString());
                     Debug.Log(number);
@@ -80,10 +87,10 @@ public class Code2D : MonoBehaviour
                 if (number % 2 == 1 && FinishedCreating == false)
                 {
                     NextLocation = LastGO.transform.Find("CylinderTop").GetComponent<Transform>();
-                    LastGO = Instantiate(Cylinder, new Vector2(NextLocation.transform.position.x + 2, NextLocation.transform.position.y + 0.5f), Quaternion.identity);
+                    LastGO = Instantiate(Cylinder, new Vector2(NextLocation.transform.position.x - 1, NextLocation.transform.position.y + 0.5f), Quaternion.identity);
                     Numbertext = LastGO.transform.GetChild(1).transform.Find("Number").GetComponent<TextMeshProUGUI>();
                     Numbertext.SetText(number.ToString());
-                    Debug.Log(number);
+                    Debug.Log(number); 
                     //LastGO.transform.Find("Number").GetComponent<TextMeshProUGUI>().SetText(Number.ToString());
                 }
                 if (i == existingnumbers.Count)
@@ -102,6 +109,7 @@ public class Code2D : MonoBehaviour
         {
             if (Number != 1)
             {
+                CalculationProcess.SetText(Number.ToString());
                 if (numberstoadd.Contains(Number))
                 {
                     existingnumbers.Add(Number);
@@ -112,19 +120,23 @@ public class Code2D : MonoBehaviour
                 if (Number % 2 == 0)
                 {
                     ODD = false;
-                    Number = Number / 2;
+                    TempNumber = Number;
+                    Number = TempNumber / 2;
                     existingnumbers.Add(Number);
-                    numberstoadd.Sort();``1                                                             
+                    numberstoadd.Sort();                                                             
                     StartCoroutine(calculate(WaitTime));
+                    CalculationProcess.SetText(TempNumber.ToString() + " / 2 = " + Number.ToString());
                 }
                 //Odd
                 else
                 {
                     ODD = true;
-                    Number = (Number * 3) + 1;
+                    TempNumber = Number;
+                    Number = TempNumber * 3 + 1;
                     existingnumbers.Add(Number);
                     numberstoadd.Sort();
                     StartCoroutine(calculate(WaitTime));
+                    CalculationProcess.SetText(TempNumber.ToString() + " * 3 + 1 = " + Number.ToString());
                 }
             }
             if (Number == 1)

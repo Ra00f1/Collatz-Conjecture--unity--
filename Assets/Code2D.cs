@@ -61,6 +61,7 @@ public class Code2D : MonoBehaviour
     }
     public void CreateTree()
     {
+        StopCoroutine(calculate(WaitTime));
         if (FirstNumber == true)
         {
             LastGO = Instantiate(Cylinder, new Vector2(0, 0), Quaternion.identity);
@@ -94,8 +95,9 @@ public class Code2D : MonoBehaviour
                     Debug.Log(number); 
                     //LastGO.transform.Find("Number").GetComponent<TextMeshProUGUI>().SetText(Number.ToString());
                 }
-                if (i == existingnumbers.Count)
+                if (i == existingnumbers.Count && FinishedCreating == false)
                 {
+                    Debug.Log("bye");
                     FinishedCreating = true;
                     StopCoroutine(calculate(WaitTime));
                 }
@@ -152,6 +154,7 @@ public class Code2D : MonoBehaviour
         }
         if (FinishedCalculating == true)
         {
+            Debug.Log("Hello");
             CreateTree();
         }
     }
